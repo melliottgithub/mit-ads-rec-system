@@ -63,9 +63,7 @@ Use a combination of collaborative filtering, content-based filtering, and machi
 
 The recommendation system can handle the growing amount of data and user queries as the user base expands. 
 
-# Solution Implementation
-
-## 0. Project Workflow
+# Project Workflow
 
 For building the music recommendation system, it will be necessary to follow a structured workflow. The model's performance will be iteratively improved by tweaking the models or features until the evaluation metrics are satisfactory.
 
@@ -81,15 +79,30 @@ See the [EDA](./eda.ipynb) notebook for the data cleaning process.
 
 ## 3. Models Training
 
+See Model Training notebook for the detailed model training process:
+- [Collaborative Filtering](./model-training.ipynb)
+- [Content-Based Filtering](./cb-model-training.ipynb)
+
 See the [Method and Techniques Review](./METHODS-TECH.md) for the detailed review of methods and techniques.
 
+## 4. Model Selection
 
-### 4.1 Model Selection
+### Collaborative Filtering
+
+The selection for Collaborative Filtering models, particularly focusing on SVD (Singular Value Decomposition), NMF (Non-negative Matrix Factorization), and Slope One algorithms, it's essential to understand the nuances of each method and the challenges they present, especially in the context of hardware limitations.
+
+Slope One is a simpler algorithm compared to SVD and NMF, focusing on item-based collaborative filtering. Slope One's simplicity is its main advantage, making it easy to implement and understand. However, this simplicity comes at the cost of memory and computational efficiency, especially with large datasets. The critical issue with Slope One, as noted, is its inability to be trained within the constraints of a system with 128GB of RAM. This limitation is primarily due to the algorithm's memory requirements for storing the differences between item ratings across the entire dataset. 
+
+SVD and NMF, while computationally intensive, are generally more scalable and memory-efficient than Slope One, thanks to their matrix factorization techniques that reduce the dimensionality of the problem. This makes them more suitable for systems with finite memory resources, such as the 128GB RAM system mentioned.
+
+### Content-Based Filtering
+
+The TF-IDF (sparse vectors) and Cosine Similarity are utilized in Content-Based Filtering, rather than algorithms available in libraries like Surprise, this is primarily due to the nature of the data and the computational models supported by these libraries.
+
+The choice to use TF-IDF and Cosine Similarity for Content-Based Filtering, instead of algorithms from libraries like Surprise, is driven by the need to efficiently handle sparse text data representations and compute similarity between items based on their content.
+
+Some algorithms, such as CoClustering and KNNBasic, are primarily oriented towards collaborative filtering. However, they were tested in the content-based filtering approach but later discarded due to the inability to be trained within the constraints of a system with 128GB of RAM.
 
 ## 5. Models Evaluation
 
-TBD
-
-## 6. Final Solution Design
-
-TBD
+In evaluating the performance metrics on a 40% sample of the total dataset, the SVD algorithm demonstrated superior accuracy with a Root Mean Square Error (RMSE) of 0.3127 and a Mean Absolute Error (MAE) of 0.2676. Comparatively, the NMF algorithm showed slightly lower performance, with an RMSE of 0.3567 and an MAE of 0.2877. These results indicate that SVD was more effective in predicting ratings with closer proximity to the actual values, suggesting it as the preferable model for this subset of the dataset in terms of both precision and consistency in predictions.
