@@ -1,0 +1,9 @@
+name: music-rec
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pandas
+  - python-duckdb
+  - matplotlib
+  - scikit-surprise
